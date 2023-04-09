@@ -1,9 +1,11 @@
 <script setup>
-
+import Calculator from './components/Calculator.vue';
 </script>
 
 <template>
-    helllow
+    <div id="app">
+      <calculator></calculator>
+    </div>
 </template>
 
 <style scoped>
