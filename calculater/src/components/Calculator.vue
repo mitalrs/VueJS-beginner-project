@@ -3,16 +3,58 @@ export default {
   data() {
     return {
       calculateVale: "",
-      calculaterElement: ["C","*","/","-","7","8","9","+","4","5","6","%","1","2","3","=","0","."],
+      calculaterElement: [
+        "C",
+        "*",
+        "/",
+        "-",
+        "7",
+        "8",
+        "9",
+        "+",
+        "4",
+        "5",
+        "6",
+        "%",
+        "1",
+        "2",
+        "3",
+        "=",
+        "0",
+        ".",
+      ],
+      operator: null,
+      previouseCalculatorValue: '',
     };
   },
   methods: {
-    action(n){
-        if(!isNaN(n) || n==='.'){
-            this.calculateVale += n+'';
-        }
-    }
-  }
+    action(n) {
+      if (!isNaN(n) || n === ".") {
+        this.calculateVale += n + "";
+      }
+
+      if (n === "C") {
+        this.calculateVale = "";
+      }
+
+      if (n === "%") {
+        this.calculateVale = this.calculateVale / 100 + "";
+      }
+
+      if (["*", "/", "+", "-"].includes(n)) {
+        this.operator = n;
+        this.previouseCalculatorValue = this.calculateVale;
+        this.calculateVale = '';
+      }
+      if (n === "=") {
+        this.calculateVale = eval(
+          this.previouseCalculatorValue + this.operator + this.calculateVale
+        );
+        this.previouseCalculatorValue = '';
+        this.operator = null;
+      }
+    },
+  },
 };
 </script>
 
@@ -26,24 +68,28 @@ export default {
     </div>
 
     <div class="row no-gutters">
-        <div class="col-3" v-for="n in calculaterElement" :key="n">
-            <div class="lead text-black text-center hover-class"
-            :class="{'bg-green': ['c','*','/','-','+','%','='].includes(n)}"
-            @click="action(n)"
-            >
-                {{ n }}
-            </div>
+      <div class="col-3" v-for="n in calculaterElement" :key="n">
+        <div
+          class="lead text-black text-center hover-class"
+          :class="{
+            'bg-green': ['C', '*', '/', '-', '+', '%', '='].includes(n),
+          }"
+          @click="action(n)"
+        >
+          {{ n }}
         </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 .hover-class:hover {
-    cursor: pointer;
-    background-color: rgb(209, 209, 209);
+  cursor: pointer;
+  background-color: rgb(209, 209, 209);
 }
-.bg-green{
-    background-color: green;
+.bg-green {
+  background-color: green;
+  color: antiquewhite;
 }
 </style>
